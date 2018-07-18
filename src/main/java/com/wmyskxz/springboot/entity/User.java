@@ -84,11 +84,7 @@ public class User implements Serializable {
         this.createDate = new Date();
     }
 
-    public User(String username, Date createDate, Department department) {
-        this.username = username;
-        this.createDate = createDate;
-        this.department = department;
-    }
+  
 
     public User(String username, Department department) {
         this.username = username;

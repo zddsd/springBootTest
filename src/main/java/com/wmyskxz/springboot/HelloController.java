@@ -13,8 +13,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,13 +42,24 @@ public class HelloController {
     @RequestMapping("/hello")
     public String hello() {
 
+        String s="abc";
+        String s1=s.toUpperCase();
+        System.out.println(s1);
         return content;
     }
 
 
     @GetMapping("/user")
     public List<User> findUser (){
-        List<User> users=userRepository.findByUsernameLike("张%");
+      //  List<User> users=userRepository.findByUsernameLike("张%");
+        List<User> users=userRepository.findAll(new Specification<User>() {
+            @Override
+            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                //root= criteriaQuery.from(User.class);
+                //Path<String> name=root.get("username");
+                return criteriaBuilder.like(root.get("username").as(String.class),"张%");
+            }
+        });
         return users;
     }
 
